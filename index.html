@@ -45,7 +45,8 @@
 			lon = 0, onMouseDownLon = 0,
 			lat = 0, onMouseDownLat = 0,
 			phi = 0, theta = 0;
-
+			var mouseX = 0;
+			var mouseY = 0;
 			init();
 			animate();
 
@@ -148,6 +149,10 @@
 				onPointerDownLat = lat;
 
 			}
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+
 
 			function onDocumentMouseMove( event ) {
 
@@ -157,6 +162,8 @@
 					lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
 
 				}
+				mouseX = ( event.clientX - windowHalfX )/3 ;
+				mouseY = ( event.clientY - windowHalfY )/3 ;
 
 			}
 
@@ -203,7 +210,6 @@
 
 				if ( isUserInteracting === false ) {
 
-					lon += 0.1;
 
 				}
 
@@ -214,6 +220,9 @@
 				camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
 				camera.target.y = 500 * Math.cos( phi );
 				camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+
+				camera.position.z += ( mouseX - camera.position.z ) * .05;
+				camera.position.y += ( - mouseY - camera.position.y ) * .05;
 
 				camera.lookAt( camera.target );
 
