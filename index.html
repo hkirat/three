@@ -163,9 +163,7 @@
 
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
-
 				renderer.setSize( window.innerWidth, window.innerHeight );
-
 			}
 
 			function onDocumentMouseDown( event ) {
@@ -210,20 +208,20 @@
 				// WebKit
 
 				if ( event.wheelDeltaY ) {
-
-					camera.fov -= event.wheelDeltaY * 0.05;
+//
+//					camera.fov -= event.wheelDeltaY * 0.05;
 
 				// Opera / Explorer 9
 
 				} else if ( event.wheelDelta ) {
 
-					camera.fov -= event.wheelDelta * 0.05;
+//					camera.fov -= event.wheelDelta * 0.05;
 
 				// Firefox
 
 				} else if ( event.detail ) {
 
-					camera.fov += event.detail * 1.0;
+//					camera.fov += event.detail * 1.0;
 
 				}
 
