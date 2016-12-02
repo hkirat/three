@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Demo 2</title>
+		<title>Demo 1</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
@@ -31,6 +31,7 @@
 
 		<div id="container"></div>
 		<div id="info">
+
 		</div>
 
 		<script src="./three.js"></script>
@@ -41,10 +42,12 @@
 
 			var isUserInteracting = false,
 			onMouseDownMouseX = 0, onMouseDownMouseY = 0,
-			lon = 0, onMouseDownLon = 0,
+			lon = 100, onMouseDownLon = 0,
 			lat = 0, onMouseDownLat = 0,
+			
 			phi = 0, theta = 0;
-
+			var mouseX = 0;
+			var mouseY = 0;
 			init();
 			animate();
 
@@ -147,6 +150,10 @@
 				onPointerDownLat = lat;
 
 			}
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+
 
 			function onDocumentMouseMove( event ) {
 
@@ -156,6 +163,8 @@
 					lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
 
 				}
+				mouseX = ( event.clientX - windowHalfX )/3 ;
+				mouseY = ( event.clientY - windowHalfY )/3 ;
 
 			}
 
@@ -197,15 +206,12 @@
 				update();
 
 			}
-
 			function update() {
 
 				if ( isUserInteracting === false ) {
 
-					lon += 0.1;
 
 				}
-
 				lat = Math.max( - 85, Math.min( 85, lat ) );
 				phi = THREE.Math.degToRad( 90 - lat );
 				theta = THREE.Math.degToRad( lon );
@@ -213,6 +219,10 @@
 				camera.target.x = 500 * Math.sin( phi ) * Math.cos( theta );
 				camera.target.y = 500 * Math.cos( phi );
 				camera.target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+				lon += ( mouseX/5 - lon ) * .05;
+				lon+=10;
+//				camera.position.z += ( mouseX - camera.position.z ) * .05;/
+//				camera.position.y += ( - mouseY - camera.position.y ) * .05;
 
 				camera.lookAt( camera.target );
 
