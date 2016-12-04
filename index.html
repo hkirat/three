@@ -1,38 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<style>
-	    .full-957 .left-471 {
-	        float:left;
-	        max-width:471px;
-	        width:471px;
-	        margin:0px 15px 15px 0px;
-	    }
-	    .left-471 .image-box {
-	        width:100%;
-	    }
-	    .left-471 .image-box img {
-	        width:auto;
-	        max-width:471px;
-	        height:auto;
-	        margin:0 auto;
-	    display:block;
-	    }
-	    .full-957 .right-471 {
-	        float:right;
-	        width:471px;
-	        margin:0px 0px 15px 0px
-	    }
-	    .right-471 .row1-left span {
-	        float:left;
-	        clear:both;
-	        margin:0px 0px 15px;
-	    }
-	    .right-471 .row1-right span {
-	        float:right;
-	        margin:0px 0px 15px;
-	    }
-		</style>
 		<title>Demo 1</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -40,7 +8,6 @@
 			body {
 				background-color: #000000;
 				margin: 0px;
-				overflow: hidden;
 			}
 
 			#info {
@@ -57,12 +24,29 @@
 			a {
 				color: #ffffff;
 			}
-		</style>
-	</head>
-	<body>
+			body > div {
+				position:fixed;
+				top:0;
+				left:0;
+				width:100%;
+				height:100%;
+				background:transparent center no-repeat;
+				background-size:cover;
+			}
 
-		<div id="container"></div>
-		<div id="info">
+		</style>
+
+	</head>
+	<body style = "background-color:rgb(255,255,255);color:white;background-repeat: no-repeat;background-attachment: fixed;background-position: center; ">
+		<div id="container"  data-0-start="sc:0;mat:1;transform:translate(0,0%);-webkit-filter: blur(0px);filter: blur(0px);"
+		data-500-start="mat:1;transform:translate(0,0%);-webkit-filter: blur(400px);filter: blur(40px);sc:1;"
+		data-1000-start="mat:1;transform:translate(0,0%);-webkit-filter: blur(0px);filter: blur(0px);sc:2;"
+		>
+			
+
+		</div>
+		
+		<div id="info"> 
 
 		</div>
 
@@ -81,10 +65,12 @@
 			var mouseY = 0;
 			init();
 			animate();
-
+			var mesh;
+			var material;
+			var geometry;
 			function init() {
 
-				var container, mesh;
+				var container;
 
 				container = document.getElementById( 'container' );
 
@@ -93,12 +79,13 @@
 
 				scene = new THREE.Scene();
 
-				var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+				geometry = new THREE.SphereGeometry( 500, 60, 40 );
 				geometry.applyMatrix( new THREE.Matrix4().makeScale( -1, 1, 1 ) );
 
-				var material = new THREE.MeshBasicMaterial( {
-					map: THREE.ImageUtils.loadTexture( 'textures/key5.jpg' )
+				material = new THREE.MeshBasicMaterial( {
+					map: THREE.ImageUtils.loadTexture( 'textures/key6.jpg' )
 				} );
+				material.transparent = true;
 
 				mesh = new THREE.Mesh( geometry, material );
 				
@@ -113,7 +100,6 @@
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
 				document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
-				document.addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
 
 				//
 
@@ -235,12 +221,48 @@
 				update();
 
 			}
+			var f = 1;
 			function update() {
 
 				if ( isUserInteracting === false ) {
 
 
 				}
+				if(document.getElementById('container').style.sc <=1 && f!=1) {
+					scene = new THREE.Scene();
+					geometry = new THREE.SphereGeometry( 500, 60, 40 );
+					geometry.applyMatrix( new THREE.Matrix4().makeScale( -1, 1, 1 ) );
+
+					material = new THREE.MeshBasicMaterial( {
+						map: THREE.ImageUtils.loadTexture( 'textures/key6.jpg' )
+					} );
+					material.transparent = true;
+
+					mesh = new THREE.Mesh( geometry, material );
+					
+					scene.add( mesh );
+					f = 1;
+				}
+				if(document.getElementById('container').style.sc >=1 && f!=2) {
+					f = 2;
+					scene = new THREE.Scene();
+					geometry = new THREE.SphereGeometry( 500, 60, 40 );
+					geometry.applyMatrix( new THREE.Matrix4().makeScale( -1, 1, 1 ) );
+
+					material = new THREE.MeshBasicMaterial( {
+						map: THREE.ImageUtils.loadTexture( 'textures/key5.jpg' )
+					} );
+					material.transparent = true;
+
+					mesh = new THREE.Mesh( geometry, material );
+					
+					scene.add( mesh );
+				}
+
+
+
+
+				material.opacity = document.getElementById('container').style.mat;
 				lat = Math.max( - 85, Math.min( 85, lat ) );
 				phi = THREE.Math.degToRad( 90 - lat );
 				theta = THREE.Math.degToRad( lon );
@@ -264,27 +286,27 @@
 
 			}
 			
-			var text2 = document.createElement('div');
-			text2.style.position = 'absolute';
-			//text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-			text2.style.color = "white";
-			text2.innerHTML = "Elysian Studio";
-			text2.style.top = 100 + 'px';
-			text2.style.left = windowHalfX + 'px';
-			document.body.appendChild(text2);
-			text2.style.fontSize = "100px";
-			text2.style.background = "rgba(0, 0, 0, 0.3)";
+			// var text2 = document.createElement('div');
+			// text2.style.position = 'absolute';
+			// //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+			// text2.style.color = "white";
+			// text2.innerHTML = "Elysian Studio";
+			// text2.style.top = 100 + 'px';
+			// text2.style.left = windowHalfX + 'px';
+			// document.body.appendChild(text2);
+			// text2.style.fontSize = "100px";
+			// text2.style.background = "rgba(0, 0, 0, 0.3)";
 			
-			var text3 = document.createElement('div');
-			text3.style.position = 'absolute';
-			//text3.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-			text3.style.color = "white";
-			text3.innerHTML = "A trip to ladhak";
-			text3.style.top = 100 + text2.clientHeight + 20 +'px';
-			text3.style.left = windowHalfX + 'px';
-			document.body.appendChild(text3);
-			text3.style.fontSize = "40px";
-			text3.style.background = "rgba(0, 0, 0, 0.3)";
+			// var text3 = document.createElement('div');
+			// text3.style.position = 'absolute';
+			// //text3.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+			// text3.style.color = "white";
+			// text3.innerHTML = "A trip to ladhak";
+			// text3.style.top = 100 + text2.clientHeight + 20 +'px';
+			// text3.style.left = windowHalfX + 'px';
+			// document.body.appendChild(text3);
+			// text3.style.fontSize = "40px";
+			// text3.style.background = "rgba(0, 0, 0, 0.3)";
 
 			var img = document.createElement('img');
 			img.style.position = 'absolute';
@@ -294,7 +316,17 @@
 			document.body.appendChild(img);
 
 		</script>
+		<script type="text/javascript" src="./sk.js"></script>
 
+		<script type="text/javascript">
+		skrollr.init({
+			constants: {
+				//fill the box for a "duration" of 150% of the viewport (pause for 150%)
+				//adjust for shorter/longer pause
+				box: '150p'
+			}
+		});
+		</script>
 
 	</body>
 </html>
